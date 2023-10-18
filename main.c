@@ -2,11 +2,11 @@
 #include "monty.h"
 
 /**
-* isNumber - Checks if a string represents a valid number.
-* @number: The input string to be checked.
-*
-* Return: 1 if the string is a valid number, 0 otherwise.
-*/
+ * isNumber - Checks if a string represents a valid number.
+ * @number: The input string to be checked.
+ *
+ * Return: 1 if the string is a valid number, 0 otherwise.
+ */
 int isNumber(char *number)
 {
 	int i = 0;
@@ -22,33 +22,31 @@ int isNumber(char *number)
 }
 
 /**
- * process_line - Processes a line of input.
- * @line: The line to process.
- * @line_number: A pointer to the current line number.
- * @stack: A pointer to the current line number.
+ * execute_instruction - Executes a specific instruction.
+ * @token: The instruction token.
+ * @arg: The argument associated with the instruction.
+ * @line_number: The current line number.
+ * @stack: A pointer to the stack.
  */
-void process_line(char *line, unsigned int *line_number, stack_t **stack)
+void execute_instruction(char *token, char *arg,
+		unsigned int *line_number, stack_t **stack)
 {
 	int i = 0;
-	char *token, *arg, *line_cpy = strdup(line);
-	instruction_t instruction[] = {{"push", push}, {"pall", pall}, {NULL, NULL}};
+	instruction_t instruction[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{NULL, NULL}
+	};
 
-	if (!line_cpy)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	token = strtok(line_cpy, " \n\t\r");
 	while (instruction[i].opcode != NULL)
 	{
 		if (strcmp(token, instruction[i].opcode) == 0)
 		{
 			if (strcmp(token, "push") == 0)
 			{
-				arg = strtok(NULL, " \n\t\r");
 				if (arg == NULL || !isNumber(arg))
 				{
-					free(line_cpy);
 					fprintf(stderr, "L%d: usage: push integer\n", *line_number);
 					exit(EXIT_FAILURE);
 				}
@@ -60,12 +58,29 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 		}
 		i++;
 	}
-	if (instruction[i].opcode == NULL)
+}
+
+/**
+ * process_line - Processes a line of input.
+ * @line: The line to process.
+ * @line_number: A pointer to the current line number.
+ * @stack: A pointer to the current line number.
+ */
+void process_line(char *line, unsigned int *line_number, stack_t **stack)
+{
+	char *token, *arg, *line_cpy = strdup(line);
+
+	if (!line_cpy)
 	{
-		free(line_cpy);
-		fprintf(stderr, "L%d: unknown instruction %s\n", *line_number, token);
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
+
+	token = strtok(line_cpy, " \n\t\r");
+	arg = strtok(NULL, " \n\t\r");
+
+	execute_instruction(token, arg, line_number, stack);
+
 	free(line_cpy);
 }
 

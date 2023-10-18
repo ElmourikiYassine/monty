@@ -2,6 +2,22 @@
 #include "monty.h"
 
 /**
+* free_stack - frees the stack
+* @stack: the head
+*/
+void free_stack(stack_t **stack)
+{
+	stack_t *tmp;
+
+	tmp = *stack;
+	while (*stack)
+	{
+		tmp = (*stack)->next;
+		free(*stack);
+		*stack = tmp;
+	}
+}
+/**
  * isNumber - Checks if a string represents a valid number.
  * @number: The input string to be checked.
  *
@@ -27,12 +43,12 @@ int isNumber(char *number)
  * @arg: The argument associated with the instruction.
  * @line_number: The current line number.
  * @stack: A pointer to the stack.
+ * @file: A pointer to the stack.
  */
 void execute_instruction(char *token, char *arg,
-		unsigned int *line_number, stack_t **stack)
+		unsigned int *line_number, stack_t **stack, FILE *file)
 {
 	int i = 0;
-	char *token, *arg, *line_cpy = strdup(line);
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
@@ -49,6 +65,8 @@ void execute_instruction(char *token, char *arg,
 				if (arg == NULL || !isNumber(arg))
 				{
 					fprintf(stderr, "L%d: usage: push integer\n", *line_number);
+					fclose(file);
+					free_stack(stack);
 					exit(EXIT_FAILURE);
 				}
 				instruction[i].f(stack, atoi(arg));
@@ -66,21 +84,24 @@ void execute_instruction(char *token, char *arg,
  * @line: The line to process.
  * @line_number: A pointer to the current line number.
  * @stack: A pointer to the current line number.
+ * @file: A pointer to the current line number.
  */
-void process_line(char *line, unsigned int *line_number, stack_t **stack)
+void process_line(char *line, unsigned int *line_number,
+		stack_t **stack, FILE *file)
 {
 	char *token, *arg, *line_cpy = strdup(line);
 
 	if (!line_cpy)
 	{
 		fprintf(stderr, "Error: malloc failed\n");
+		fclose(file);
+		free_stack(stack);
 		exit(EXIT_FAILURE);
 	}
-
 	token = strtok(line_cpy, " \n\t\r");
 	arg = strtok(NULL, " \n\t\r");
 
-	execute_instruction(token, arg, line_number, stack);
+	execute_instruction(token, arg, line_number, stack, file);
 
 	free(line_cpy);
 }
@@ -111,7 +132,6 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-
 	while ((line_len = getline(&line, &len, stream)) != -1)
 	{
 		char *line_cpy = strdup(line);
@@ -120,14 +140,15 @@ int main(int argc, char **argv)
 		if (!line_cpy)
 		{
 			fprintf(stderr, "Error: malloc failed\n");
+			fclose(stream);
+			free_stack(&stack);
 			exit(EXIT_FAILURE);
 		}
 		if (line_len > 1 && token != NULL)
-			process_line(line, &line_number, &stack);
+			process_line(line, &line_number, &stack, stream);
 		line_number++;
 		free(line_cpy);
 	}
-
 	fclose(stream);
 	return (0);
 }

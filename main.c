@@ -2,6 +2,26 @@
 #include "monty.h"
 
 /**
+* isNumber - Checks if a string represents a valid number.
+* @number: The input string to be checked.
+*
+* Return: 1 if the string is a valid number, 0 otherwise.
+*/
+int isNumber(char *number)
+{
+	int i = 0;
+
+	if (number[0] == '-')
+		i = 1;
+	for (; number[i] != 0; i++)
+	{
+		if (!isdigit(number[i]))
+			return (0);
+	}
+	return (1);
+}
+
+/**
  * process_line - Processes a line of input.
  * @line: The line to process.
  * @line_number: A pointer to the current line number.
@@ -24,7 +44,16 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 		if (strcmp(token, instruction[i].opcode) == 0)
 		{
 			if (strcmp(token, "push") == 0)
-				instruction[i].f(stack, atoi(strtok(NULL, " \n\t\r")));
+			{
+				char *arg = strtok(NULL, " \n\t\r");
+
+				if (arg == NULL || !isNumber(arg))
+				{
+					fprintf(stderr, "L%d: usage: push integer\n", *line_number);
+					exit(EXIT_FAILURE);
+				}
+				instruction[i].f(stack, atoi(arg));
+			}
 			else
 				instruction[i].f(stack, *line_number);
 			break;
@@ -63,14 +92,14 @@ int main(int argc, char **argv)
 	stream = fopen(argv[1], "r");
 	if (stream == NULL)
 	{
-		fprintf(stderr, "Error: Can't open file %s", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 
 	while ((line_len = getline(&line, &len, stream)) != -1)
 	{
 		char *line_cpy = strdup(line);
-		char * token = strtok(line_cpy, " \n\t\r");
+		char *token = strtok(line_cpy, " \n\t\r");
 
 		if (line_len > 1 && token != NULL)
 			process_line(line, &line_number, &stack);

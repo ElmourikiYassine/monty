@@ -2,9 +2,9 @@
 #include "monty.h"
 
 /**
-* free_stack - frees the stack
-* @stack: the head
-*/
+ * free_stack - frees the stack
+ * @stack: the head
+ */
 void free_stack(stack_t **stack)
 {
 	stack_t *tmp;
@@ -56,6 +56,8 @@ void execute_instruction(char *token, char *arg,
 		{"pall", pall},
 		{"pint", pint},
 		{"pop", pop},
+		{"add", add},
+		{"nop", nop},
 		{NULL, NULL}
 	};
 

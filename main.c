@@ -57,6 +57,7 @@ void execute_instruction(char *token, char *arg,
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
+		{"add", add},
 		{NULL, NULL}
 	};
 

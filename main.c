@@ -2,11 +2,11 @@
 #include "monty.h"
 
 /**
-* isNumber - Checks if a string represents a valid number.
-* @number: The input string to be checked.
-*
-* Return: 1 if the string is a valid number, 0 otherwise.
-*/
+ * isNumber - Checks if a string represents a valid number.
+ * @number: The input string to be checked.
+ *
+ * Return: 1 if the string is a valid number, 0 otherwise.
+ */
 int isNumber(char *number)
 {
 	int i = 0;
@@ -35,6 +35,7 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
+		{"pint", pint},
 		{NULL, NULL}
 	};
 
@@ -92,7 +93,7 @@ int main(int argc, char **argv)
 	stream = fopen(argv[1], "r");
 	if (stream == NULL)
 	{
-		fprintf(stderr, "Error: Can't open file %s", argv[1]);
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 

@@ -21,7 +21,7 @@ pall This is the end of our program. Monty is awesome!
 
 push 0
 push 1
-push 2
+push 3
   push 3
                    pall    
 push 4

@@ -151,6 +151,8 @@ int main(int argc, char **argv)
 		free(line_cpy);
 	}
 	fclose(stream);
+	free(line);
+	free_stack(&stack);
 	return (0);
 }
 

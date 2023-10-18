@@ -51,7 +51,6 @@ void execute_instruction(char *token, char *arg,
 {
 	int i = 0;
 	int found = 0;
-
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
@@ -59,6 +58,7 @@ void execute_instruction(char *token, char *arg,
 		{"pop", pop},
 		{"add", add},
 		{"nop", nop},
+		{"NULL", NULL}
 	};
 
 	while (instruction[i].opcode != NULL)

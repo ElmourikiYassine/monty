@@ -2,31 +2,6 @@
 #include "monty.h"
 
 /**
- * push - Pushes an element to the stack.
- * @stack: A pointer to the top of the stack.
- * @line_number: The line number of the instruction.
- */
-void push(stack_t **stack, unsigned int line_number)
-{
-	(void) line_number;
-	(void) stack;
-	printf("push invoked with %d <-\n", line_number);
-}
-
-/**
- * pall - Prints all the values on the stack.
- * @stack: A pointer to the top of the stack.
- * @line_number: The line number of the instruction.
- */
-void pall(stack_t **stack, unsigned int line_number)
-{
-
-	(void) line_number;
-	(void) stack;
-	printf("pall invoked\n");
-}
-
-/**
  * process_line - Processes a line of input.
  * @line: The line to process.
  * @line_number: A pointer to the current line number.

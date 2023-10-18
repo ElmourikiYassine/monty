@@ -7,29 +7,24 @@
  */
 void push(stack_t **stack, unsigned int line_number)
 {
-	if (!stack || !stack[0] || !stack[0]->opcode)
+	int value;
+	stack_t *new_node;
+
+	if (!stack)
+	{
+		fprintf(stderr, "L%u: stack is NULL\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+
+	if (!stack[0] || stack[0]->n == 0)
 	{
 		fprintf(stderr, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	char *arg = stack[0]->opcode;
-	int i;
+	value = stack[0]->n;
 
-	for (i = 0; arg[i]; i++)
-	{
-		if (i == 0 && (arg[i] == '-' || arg[i] == '+'))
-			continue;
-		if (arg[i] < '0' || arg[i] > '9')
-		{
-			fprintf(stderr, "L%u: usage: push integer\n", line_number);
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	int value = atoi(arg);
-
-	stack_t *new_node = malloc(sizeof(stack_t));
+	new_node = malloc(sizeof(stack_t));
 
 	if (!new_node)
 	{
@@ -46,6 +41,7 @@ void push(stack_t **stack, unsigned int line_number)
 	*stack = new_node;
 }
 
+
 /**
  * pall - Prints all values on the stack.
  * @stack: A pointer to the top of the stack.
@@ -54,6 +50,7 @@ void push(stack_t **stack, unsigned int line_number)
 void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
+	(void) line_number;
 
 	while (current)
 	{

@@ -32,7 +32,6 @@ void execute_instruction(char *token, char *arg,
 		unsigned int *line_number, stack_t **stack)
 {
 	int i = 0;
-	char *token, *arg, *line_cpy = strdup(line);
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},

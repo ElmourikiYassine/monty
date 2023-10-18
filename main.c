@@ -1,22 +1,15 @@
 #define _GNU_SOURCE
 #include "monty.h"
 
-/**
- * free_stack - frees the stack
- * @stack: the head
- */
-void free_stack(stack_t **stack)
-{
-	stack_t *tmp;
+instruction_t instruction[] = {
+	{"push", push},
+	{"pall", pall},
+	{"pint", pint},
+	{"pop", pop},
+	{"add", add},
+	{"nop", nop},
+};
 
-	tmp = *stack;
-	while (*stack)
-	{
-		tmp = (*stack)->next;
-		free(*stack);
-		*stack = tmp;
-	}
-}
 
 /**
  * isNumber - Checks if a string represents a valid number.
@@ -51,6 +44,7 @@ void execute_instruction(char *token, char *arg,
 {
 	int i = 0;
 	int found = 0;
+
 
 	while (instruction[i].opcode != NULL)
 	{

@@ -47,7 +47,7 @@ void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
 void free_stack(stack_t **stack);
 
-
+extern instruction_t instruction[];
 
 
 #endif

@@ -2,41 +2,16 @@
 #include "monty.h"
 
 /**
- * push - Pushes an element to the stack.
- * @stack: A pointer to the top of the stack.
- * @line_number: The line number of the instruction.
- */
-void push(stack_t **stack, unsigned int line_number)
-{
-	(void) line_number;
-	(void) stack;
-	printf("push invoked with %d <-\n", line_number);
-}
-
-/**
- * pall - Prints all the values on the stack.
- * @stack: A pointer to the top of the stack.
- * @line_number: The line number of the instruction.
- */
-void pall(stack_t **stack, unsigned int line_number)
-{
-
-	(void) line_number;
-	(void) stack;
-	printf("pall invoked\n");
-}
-
-/**
  * process_line - Processes a line of input.
  * @line: The line to process.
  * @line_number: A pointer to the current line number.
+ * @stack: A pointer to the current line number.
  */
-void process_line(char *line, unsigned int *line_number)
+void process_line(char *line, unsigned int *line_number, stack_t **stack)
 {
 	int i = 0;
 	char *token;
 	char *line_cpy = strdup(line);
-	stack_t **stack = NULL;
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
@@ -46,13 +21,12 @@ void process_line(char *line, unsigned int *line_number)
 	token = strtok(line_cpy, " \n\t\r");
 	while (instruction[i].opcode != NULL)
 	{
-		if (strstr(token, instruction[i].opcode))
+		if (strcmp(token, instruction[i].opcode) == 0)
 		{
-			if (strstr(token, "push"))
+			if (strcmp(token, "push") == 0)
 				instruction[i].f(stack, atoi(strtok(NULL, " \n\t\r")));
 			else
 				instruction[i].f(stack, *line_number);
-			printf("%s", line);
 			break;
 		}
 		i++;
@@ -80,6 +54,7 @@ int main(int argc, char **argv)
 	ssize_t line_len;
 	FILE *stream;
 	unsigned int line_number = 1;
+	stack_t *stack = NULL;
 
 	if (argc != 2)
 	{
@@ -96,7 +71,7 @@ int main(int argc, char **argv)
 
 	while ((line_len = getline(&line, &len, stream)) != -1)
 	{
-		process_line(line, &line_number);
+		process_line(line, &line_number, &stack);
 	}
 
 	fclose(stream);

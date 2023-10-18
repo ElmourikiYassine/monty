@@ -7,28 +7,6 @@
  */
 void push(stack_t **stack, unsigned int line_number)
 {
-	if (!stack || !stack[0] || !stack[0]->opcode)
-	{
-		fprintf(stderr, "L%u: usage: push integer\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-
-	char *arg = stack[0]->opcode;
-	int i;
-
-	for (i = 0; arg[i]; i++)
-	{
-		if (i == 0 && (arg[i] == '-' || arg[i] == '+'))
-			continue;
-		if (arg[i] < '0' || arg[i] > '9')
-		{
-			fprintf(stderr, "L%u: usage: push integer\n", line_number);
-			exit(EXIT_FAILURE);
-		}
-	}
-
-	int value = atoi(arg);
-
 	stack_t *new_node = malloc(sizeof(stack_t));
 
 	if (!new_node)
@@ -37,13 +15,22 @@ void push(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 
-	new_node->n = value;
-	new_node->prev = NULL;
-	new_node->next = *stack;
+	if (*stack == NULL)
+	{
+		new_node->n = line_number;
+		new_node->next = NULL;
+		new_node->prev = NULL;
+		*stack = new_node;
+	}
+	else
+	{
 
-	if (*stack)
+		new_node->n = line_number;
 		(*stack)->prev = new_node;
-	*stack = new_node;
+		new_node->next = *stack;
+		new_node->prev = NULL;
+		*stack = new_node;
+	}
 }
 
 /**
@@ -55,7 +42,8 @@ void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
 
-	while (current)
+	(void) line_number;
+	while (current != NULL)
 	{
 		printf("%d\n", current->n);
 		current = current->next;

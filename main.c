@@ -2,11 +2,11 @@
 #include "monty.h"
 
 /**
-* isNumber - Checks if a string represents a valid number.
-* @number: The input string to be checked.
-*
-* Return: 1 if the string is a valid number, 0 otherwise.
-*/
+ * isNumber - Checks if a string represents a valid number.
+ * @number: The input string to be checked.
+ *
+ * Return: 1 if the string is a valid number, 0 otherwise.
+ */
 int isNumber(char *number)
 {
 	int i = 0;
@@ -31,7 +31,10 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 {
 	int i = 0;
 	char *token, *arg, *line_cpy = strdup(line);
-	instruction_t instruction[] = {{"push", push}, {"pall", pall}, {NULL, NULL}};
+	instruction_t instruction[] = {{"push", push}, {"pall", pall}, {NULL, NULL},
+		{"pint", pint},
+		{NULL, NULL}
+	};
 
 	if (!line_cpy)
 	{

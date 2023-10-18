@@ -30,13 +30,8 @@ int isNumber(char *number)
 void process_line(char *line, unsigned int *line_number, stack_t **stack)
 {
 	int i = 0;
-	char *token;
-	char *line_cpy = strdup(line);
-	instruction_t instruction[] = {
-		{"push", push},
-		{"pall", pall},
-		{NULL, NULL}
-	};
+	char *token, *arg, *line_cpy = strdup(line);
+	instruction_t instruction[] = {{"push", push}, {"pall", pall}, {NULL, NULL}};
 
 	if (!line_cpy)
 	{
@@ -50,8 +45,7 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 		{
 			if (strcmp(token, "push") == 0)
 			{
-				char *arg = strtok(NULL, " \n\t\r");
-
+				arg = strtok(NULL, " \n\t\r");
 				if (arg == NULL || !isNumber(arg))
 				{
 					free(line_cpy);

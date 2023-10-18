@@ -1,34 +1,85 @@
 #define _GNU_SOURCE
 #include "monty.h"
 
+/**
+ * push - Pushes an element to the stack.
+ * @stack: A pointer to the top of the stack.
+ * @line_number: The line number of the instruction.
+ */
 void push(stack_t **stack, unsigned int line_number)
 {
-	(void) stack;
 	(void) line_number;
-	printf("invoked\n");
+	(void) stack;
+	printf("push invoked with %d <-\n", line_number);
 }
 
-
+/**
+ * pall - Prints all the values on the stack.
+ * @stack: A pointer to the top of the stack.
+ * @line_number: The line number of the instruction.
+ */
 void pall(stack_t **stack, unsigned int line_number)
 {
-	(void) stack;
-	(void) line_number;
-	printf("invoked\n");
-}
-int main(int argc, char **argv)
-{
 
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t line_len;
-	FILE *stream;
-	unsigned int line_number = 0;
-	instruction_t instruction[] =
-	{
+	(void) line_number;
+	(void) stack;
+	printf("pall invoked\n");
+}
+
+/**
+ * process_line - Processes a line of input.
+ * @line: The line to process.
+ * @line_number: A pointer to the current line number.
+ */
+void process_line(char *line, unsigned int *line_number)
+{
+	int i = 0;
+	char *token;
+	char *line_cpy = strdup(line);
+	stack_t **stack = NULL;
+	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
 		{NULL, NULL}
 	};
+
+	token = strtok(line_cpy, " \n\t\r");
+	while (instruction[i].opcode != NULL)
+	{
+		if (strstr(token, instruction[i].opcode))
+		{
+			if (strstr(token, "push"))
+				instruction[i].f(stack, atoi(strtok(NULL, " \n\t\r")));
+			else
+				instruction[i].f(stack, *line_number);
+			printf("%s", line);
+			break;
+		}
+		i++;
+	}
+	if (instruction[i].opcode == NULL)
+	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", *line_number, token);
+		free(line_cpy);
+		exit(EXIT_FAILURE);
+	}
+	free(line_cpy);
+	(*line_number)++;
+}
+
+/**
+ * main - The entry point of the program.
+ * @argc: The number of command-line arguments.
+ * @argv: An array of command-line argument strings.
+ * Return: 0 on success, or an exit code on failure.
+ */
+int main(int argc, char **argv)
+{
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t line_len;
+	FILE *stream;
+	unsigned int line_number = 1;
 
 	if (argc != 2)
 	{
@@ -45,23 +96,10 @@ int main(int argc, char **argv)
 
 	while ((line_len = getline(&line, &len, stream)) != -1)
 	{
-		int i = 0;
-		char *token;
-		char *line_cpy = strdup(line);
-
-		token = strtok(line_cpy, " \n\t\r");
-		while (instruction[i].opcode != NULL)
-		{
-			if (strstr(token, instruction[i].opcode))
-			{
-				printf("%s <---\n", token);
-			}
-			i++;
-		}
-		printf("%s", line);
-		free(line_cpy);
-		line_number++;
+		process_line(line, &line_number);
 	}
+
+	fclose(stream);
 	return (0);
 }
 

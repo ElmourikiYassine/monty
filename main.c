@@ -38,7 +38,6 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 		exit(EXIT_FAILURE);
 	}
 	free(line_cpy);
-	(*line_number)++;
 }
 
 /**
@@ -58,10 +57,9 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		write(STDERR_FILENO, "USAGE: monty file\n", 19);
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
 	stream = fopen(argv[1], "r");
 	if (stream == NULL)
 	{
@@ -71,7 +69,12 @@ int main(int argc, char **argv)
 
 	while ((line_len = getline(&line, &len, stream)) != -1)
 	{
-		process_line(line, &line_number, &stack);
+		char *line_cpy = strdup(line);
+		char * token = strtok(line_cpy, " \n\t\r");
+
+		if (line_len > 1 && token != NULL)
+			process_line(line, &line_number, &stack);
+		line_number++;
 	}
 
 	fclose(stream);

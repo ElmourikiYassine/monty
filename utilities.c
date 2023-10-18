@@ -33,6 +33,7 @@ void push(stack_t **stack, unsigned int line_number)
 	}
 }
 
+
 /**
  * pall - Prints all values on the stack.
  * @stack: A pointer to the top of the stack.
@@ -41,6 +42,7 @@ void push(stack_t **stack, unsigned int line_number)
 void pall(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
+	(void) line_number;
 
 	(void) line_number;
 	while (current != NULL)

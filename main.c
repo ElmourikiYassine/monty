@@ -52,6 +52,15 @@ void execute_instruction(char *token, char *arg,
 	int i = 0;
 	int found = 0;
 
+	instruction_t instruction[] = {
+		{"push", push},
+		{"pall", pall},
+		{"pint", pint},
+		{"pop", pop},
+		{"add", add},
+		{"nop", nop},
+	};
+
 	while (instruction[i].opcode != NULL)
 	{
 		if (strcmp(token, instruction[i].opcode) == 0)

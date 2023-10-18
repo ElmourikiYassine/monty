@@ -17,6 +17,7 @@ void free_stack(stack_t **stack)
 		*stack = tmp;
 	}
 }
+
 /**
  * isNumber - Checks if a string represents a valid number.
  * @number: The input string to be checked.
@@ -49,6 +50,7 @@ void execute_instruction(char *token, char *arg,
 		unsigned int *line_number, stack_t **stack, FILE *file)
 {
 	int i = 0;
+	int found = 0;
 	instruction_t instruction[] = {
 		{"push", push},
 		{"pall", pall},
@@ -74,9 +76,17 @@ void execute_instruction(char *token, char *arg,
 			}
 			else
 				instruction[i].f(stack, *line_number);
+			found = 1;
 			break;
 		}
 		i++;
+	}
+	if (!found)
+	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", *line_number, token);
+		free_stack(stack);
+		fclose(file);
+		exit(EXIT_FAILURE);
 	}
 }
 

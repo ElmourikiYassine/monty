@@ -39,6 +39,11 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 		{NULL, NULL}
 	};
 
+	if (!line_cpy)
+	{
+		fprintf(stderr, "Error: malloc failed\n");
+		exit(EXIT_FAILURE);
+	}
 	token = strtok(line_cpy, " \n\t\r");
 	while (instruction[i].opcode != NULL)
 	{
@@ -50,6 +55,7 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 
 				if (arg == NULL || !isNumber(arg))
 				{
+					free(line_cpy);
 					fprintf(stderr, "L%d: usage: push integer\n", *line_number);
 					exit(EXIT_FAILURE);
 				}
@@ -63,8 +69,8 @@ void process_line(char *line, unsigned int *line_number, stack_t **stack)
 	}
 	if (instruction[i].opcode == NULL)
 	{
-		fprintf(stderr, "L%d: unknown instruction %s\n", *line_number, token);
 		free(line_cpy);
+		fprintf(stderr, "L%d: unknown instruction %s\n", *line_number, token);
 		exit(EXIT_FAILURE);
 	}
 	free(line_cpy);
@@ -102,9 +108,15 @@ int main(int argc, char **argv)
 		char *line_cpy = strdup(line);
 		char *token = strtok(line_cpy, " \n\t\r");
 
+		if (!line_cpy)
+		{
+			fprintf(stderr, "Error: malloc failed\n");
+			exit(EXIT_FAILURE);
+		}
 		if (line_len > 1 && token != NULL)
 			process_line(line, &line_number, &stack);
 		line_number++;
+		free(line_cpy);
 	}
 
 	fclose(stream);

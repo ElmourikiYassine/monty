@@ -16,9 +16,9 @@ void pstr(stack_t **stack, unsigned int line_number)
 		printf("\n");
 		return;
 	}
-	while (current->next != NULL &&
-		current->n != 0      &&
-		current->n > 0       &&
+	while (current != NULL    &&
+		current->n != 0   &&
+		current->n > 0    &&
 		current->n <= 126)
 	{
 		found = 1;

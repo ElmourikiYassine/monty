@@ -35,6 +35,11 @@ void execute_instruction(char *token, char *arg,
 	int i = 0;
 	int found = 0;
 
+	if (token[0] == '#')
+	{
+		found = 1;
+		nop(stack, *line_number);
+	}
 	while (instruction[i].opcode != NULL)
 	{
 		if (strcmp(token, instruction[i].opcode) == 0)

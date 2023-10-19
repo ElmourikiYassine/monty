@@ -10,6 +10,7 @@ instruction_t instruction[] = {
 	{"nop", nop},
 	{"sub", sub},
 	{"div", _div},
+	{"mul", mul},
 	{"NULL", NULL}
 };
 

@@ -8,24 +8,19 @@
 void pstr(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current = *stack;
-	int found = 0;
 
-	(void) line_number;
-	if (!*stack)
+	(void)line_number;
+	current = *stack;
+	while (current != NULL)
 	{
-		printf("\n");
-		return;
-	}
-	while (current != NULL    &&
-		current->n != 0   &&
-		current->n > 0    &&
-		current->n <= 126)
-	{
-		found = 1;
+		if (current->n > 127 || current->n <= 0)
+		{
+			break;
+		}
 		printf("%c", current->n);
 		current = current->next;
 	}
-	if (found)
-		printf("\n");
+
+	printf("\n");
 }
 

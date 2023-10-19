@@ -14,11 +14,6 @@ void sub(stack_t **stack, unsigned int line_number)
 	}
 
 	(*stack)->next->n = ((*stack)->next->n - (*stack)->n);
-	/*
-	(*stack)->next->n = ((*stack)->next->n > (*stack)->n) ?
-		((*stack)->next->n - (*stack)->n) :
-		((*stack)->n - (*stack)->next->n);
-	*/
 	pop(stack, line_number);
 }
 

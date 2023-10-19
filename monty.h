@@ -50,7 +50,11 @@ void _div(stack_t **stack, unsigned int line_number);
 void mul(stack_t **stack, unsigned int line_number);
 void mod(stack_t **stack, unsigned int line_number);
 void pchar(stack_t **stack, unsigned int line_number);
+<<<<<<< HEAD
 void rotl(stack_t **stack, unsigned int line_number);
+=======
+void pstr(stack_t **stack, unsigned int line_number);
+>>>>>>> b419fa60ebcb0fb50a0a53c4c8fd044b10dae40b
 void free_stack(stack_t **stack);
 
 extern instruction_t instruction[];

@@ -7,7 +7,7 @@
  */
 void pstr(stack_t **stack, unsigned int line_number)
 {
-	stack_t *current;
+	stack_t *current = *stack;
 	int found = 0;
 
 	(void) line_number;
@@ -16,12 +16,10 @@ void pstr(stack_t **stack, unsigned int line_number)
 		printf("\n");
 		return;
 	}
-	current = *stack;
-
-	while (current->n != 0   &&
-		current->n >= 33   &&
-		current->n <= 126 &&
-		current->next != NULL)
+	while (current->next != NULL &&
+		current->n != 0      &&
+		current->n > 0       &&
+		current->n <= 126)
 	{
 		found = 1;
 		printf("%c", current->n);

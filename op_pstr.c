@@ -20,7 +20,7 @@ void pstr(stack_t **stack, unsigned int line_number)
 
 	while (current->n != 0   &&
 		current->n >= 33   &&
-		current->n <=126 &&
+		current->n <= 126 &&
 		current->next != NULL)
 	{
 		found = 1;
